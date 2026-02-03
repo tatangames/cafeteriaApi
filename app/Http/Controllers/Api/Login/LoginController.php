@@ -24,7 +24,7 @@ class LoginController extends Controller
             return response()->json([
                 'success' => false,
                 'status' => 'EMAIL_NOT_FOUND',
-                'message' => 'El correo electrónico no está registrado.',
+                'message' => 'El correo electrónico no está Registrado.',
             ], 401);
         }
 
