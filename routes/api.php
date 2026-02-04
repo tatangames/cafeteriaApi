@@ -12,6 +12,15 @@ Route::post('/login', [LoginController::class, 'login']);
 
 
 
+
+Route::post('/admin/enviar/correo/password', [LoginController::class, 'enviarCorreoAdministrador']);
+Route::get('/admin/resetear/contrasena/administrador/{token}', [LoginController::class,'indexIngresoNuevaPasswordLink']);
+Route::post('/admin/administrador/actualizacion/password', [LoginController::class, 'actualizarPasswordAdministrador']);
+
+
+
+
+
 // Rutas protegidas (requieren token)
 Route::middleware('auth:sanctum')->group(function () {
     // Información del usuario autenticado

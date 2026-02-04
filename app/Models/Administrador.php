@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordAdministrador;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as ResetPasswordTrait;
 
 class Administrador extends Authenticatable
 {
-    use HasFactory, HasApiTokens; // Agregar HasApiTokens
-
+    use HasApiTokens, Notifiable, ResetPasswordTrait;
     protected $table = 'administradores'; // Asegúrate de tener el nombre correcto de la tabla
 
     protected $fillable = [
@@ -27,4 +30,9 @@ class Administrador extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordAdministrador($token));
+    }
 }

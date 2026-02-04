@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 404);
         });
 
-        // Método no permitido
+        // Métodos no permitido
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException $e, Request $request) {
             return response()->json([
                 'success' => 0,
