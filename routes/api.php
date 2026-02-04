@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'login']);
 
+Route::post('/validate-reset-token', [LoginController::class, 'validateResetToken']);
+Route::post('/reset-password-confirm', [LoginController::class, 'resetPasswordConfirm']);
 
 
 
 Route::post('/admin/enviar/correo/password', [LoginController::class, 'enviarCorreoAdministrador']);
+
+
 Route::get('/admin/resetear/contrasena/administrador/{token}', [LoginController::class,'indexIngresoNuevaPasswordLink']);
 Route::post('/admin/administrador/actualizacion/password', [LoginController::class, 'actualizarPasswordAdministrador']);
 

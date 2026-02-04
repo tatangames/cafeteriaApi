@@ -9,7 +9,8 @@ class ResetPasswordAdministrador extends BaseResetPassword
 {
     public function toMail($notifiable)
     {
-        $url = config('APP_URL')
+
+        $resetUrl = config('app.frontend_url')
             . '/admin/reset-password'
             . '?token=' . $this->token
             . '&email=' . urlencode($notifiable->email);
@@ -19,7 +20,7 @@ class ResetPasswordAdministrador extends BaseResetPassword
             ->view('emails.reset-password-admin', [
                 'nombre'   => $notifiable->nombre,
                 'email'    => $notifiable->email,
-                'resetUrl' => $url,
+                'resetUrl' => $resetUrl,
             ]);
     }
 }

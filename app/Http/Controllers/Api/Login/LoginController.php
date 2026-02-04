@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Login;
 
 use App\Http\Controllers\Controller;
 use App\Models\Administrador;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
@@ -84,8 +86,6 @@ class LoginController extends Controller
             ]
         );
 
-
-
         if ($validator->fails()) {
 
             $errors = $validator->errors();
@@ -117,7 +117,7 @@ class LoginController extends Controller
                 'success' => true,
                 'code'    => 'RESET_EMAIL_SENT',
                 'message' => 'Se envió el enlace de recuperación al correo.',
-            ], 200);
+            ]);
         }
 
         return response()->json([
@@ -159,9 +159,120 @@ class LoginController extends Controller
 
 
 
+    public function validateResetToken(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+        ]);
+
+        $token = $request->token;
+        $email = $request->email;
+
+        // Buscar el token en la tabla password_reset_tokens
+        $resetRecord = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->first();
+
+        // Verificar si existe el registro
+        if (!$resetRecord) {
+            return response()->json([
+                'message' => 'Token inválido o no encontrado'
+            ], 400);
+        }
+
+        // Verificar si el token coincide
+        if (!Hash::check($token, $resetRecord->token)) {
+            return response()->json([
+                'message' => 'Token inválido'
+            ], 400);
+        }
+
+        // Verificar si el token ha expirado (60 minutos por defecto)
+        $expiresAt = Carbon::parse($resetRecord->created_at)
+            ->addMinutes(config('auth.passwords.users.expire', 60));
+
+        if (Carbon::now()->isAfter($expiresAt)) {
+            return response()->json([
+                'message' => 'El token ha expirado'
+            ], 400);
+        }
+
+        // Token válido
+        return response()->json([
+            'message' => 'Token válido'
+        ]);
+    }
 
 
 
+
+
+    /**
+     * Restablecer contraseña con token
+     */
+    public function resetPasswordConfirm(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+
+        $token = $request->token;
+        $email = $request->email;
+        $password = $request->password;
+
+        // Buscar el token en la tabla password_reset_tokens
+        $resetRecord = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->first();
+
+        if (!$resetRecord) {
+            return response()->json([
+                'message' => 'Token inválido'
+            ], 400);
+        }
+
+        // Verificar si el token coincide
+        if (!Hash::check($token, $resetRecord->token)) {
+            return response()->json([
+                'message' => 'Token inválido'
+            ], 400);
+        }
+
+        // Verificar si el token ha expirado
+        $expiresAt = Carbon::parse($resetRecord->created_at)
+            ->addMinutes(config('auth.passwords.users.expire', 60));
+
+        if (Carbon::now()->isAfter($expiresAt)) {
+            return response()->json([
+                'message' => 'El token ha expirado'
+            ], 400);
+        }
+
+        // Buscar el usuario
+        $user = Administrador::where('email', $email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        // Actualizar la contraseña
+        $user->password = Hash::make($password);
+        $user->save();
+
+        // Eliminar el token usado
+        DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->delete();
+
+        return response()->json([
+            'message' => 'Contraseña restablecida exitosamente'
+        ], 200);
+    }
 
 
 
