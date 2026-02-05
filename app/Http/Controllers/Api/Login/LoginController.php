@@ -271,7 +271,7 @@ class LoginController extends Controller
 
         return response()->json([
             'message' => 'Contraseña restablecida exitosamente'
-        ], 200);
+        ]);
     }
 
 
