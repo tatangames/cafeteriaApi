@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
-class LoginController extends Controller
+class LoginApiController extends Controller
 {
 
     public function login(Request $request)
@@ -128,34 +128,6 @@ class LoginController extends Controller
     }
 
 
-    public function indexIngresoNuevaPasswordLink(Request $request, $token)
-    {
-        return view('admin.reset-password', [
-            'token' => $token,
-            'email' => $request->email,
-        ]);
-    }
-
-    public function actualizarPasswordAdministrador(Request $request)
-    {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:4',
-        ]);
-
-        $status = Password::broker('administradores')->reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->password = bcrypt($password);
-                $user->save();
-            }
-        );
-
-        return $status === Password::PASSWORD_RESET
-            ? redirect('/admin/login')->with('success', 'Contraseña actualizada')
-            : back()->withErrors(['email' => __($status)]);
-    }
 
 
 
@@ -273,12 +245,6 @@ class LoginController extends Controller
             'message' => 'Contraseña restablecida exitosamente'
         ]);
     }
-
-
-
-
-
-
 
 
 
