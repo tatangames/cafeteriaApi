@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\Login\LoginApiController;
 
 use App\Http\Controllers\Api\Auth\AuthApiController;
 use App\Http\Controllers\Api\Auth\DashboardController;
+use App\Http\Controllers\Api\Roles\RolesController;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +33,14 @@ Route::middleware('auth:sanctum')->group(function () {
     // Información del usuario autenticado
     Route::get('/datos', [DashboardController::class, 'datos']);
 
-    Route::get('/admin/roles/tabla', [AuthApiController::class,'listadoRoles']);
+
+
+    // ROLES Y PERMISOS
+    Route::get('/admin/roles/tabla', [RolesController::class,'listadoRoles']);
+    Route::post('/admin/roles/borrar-global', [RolesController::class, 'borrarRolGlobal']);
+    Route::get('/admin/roles/permisos/tabla/{id}', [RolesController::class,'tablaRolesPermisos']);
+    Route::post('/admin/roles/permiso/borrar', [RolesController::class, 'borrarPermiso']);
+
 
 
 });

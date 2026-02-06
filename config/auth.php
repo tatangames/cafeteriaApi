@@ -48,6 +48,11 @@ return [
             'driver' => 'session',
             'provider' => 'administradores',
         ],
+
+        'api' => [
+            'driver' => 'token', // o 'session' / 'sanctum', según uses
+            'provider' => 'administradores', // Suponiendo que los "api" son administradores
+        ],
     ],
 
     /*

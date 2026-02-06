@@ -22,11 +22,6 @@ class AuthApiController extends Controller
         ]);
     }
 
-    public function listadoRoles()
-    {
-        $roles = Role::all()->pluck('name', 'id');
-        return ['success' => true, 'roles' => $roles];
-    }
 
 
 
