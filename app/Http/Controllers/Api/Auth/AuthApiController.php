@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class AuthApiController extends Controller
 {
@@ -19,6 +20,12 @@ class AuthApiController extends Controller
             'roles' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),
         ]);
+    }
+
+    public function listadoRoles()
+    {
+        $roles = Role::all()->pluck('name', 'id');
+        return ['success' => true, 'roles' => $roles];
     }
 
 

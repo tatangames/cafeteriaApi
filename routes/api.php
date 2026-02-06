@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Información del usuario autenticado
     Route::get('/datos', [DashboardController::class, 'datos']);
 
-
+    Route::get('/admin/roles/tabla', [AuthApiController::class,'listadoRoles']);
 
 
 });
