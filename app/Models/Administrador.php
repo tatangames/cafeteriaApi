@@ -19,9 +19,10 @@ class Administrador extends Authenticatable
     protected $guard_name = 'api';
 
     protected $fillable = [
-        'name',
+        'nombre',
         'email',
         'password',
+        'estado'
     ];
 
     protected $hidden = [
@@ -38,4 +39,6 @@ class Administrador extends Authenticatable
     {
         $this->notify(new ResetPasswordAdministrador($token));
     }
+
+
 }

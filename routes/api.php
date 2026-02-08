@@ -40,6 +40,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/roles/borrar-global', [RolesController::class, 'borrarRolGlobal']);
     Route::get('/admin/roles/permisos/tabla/{id}', [RolesController::class,'tablaRolesPermisos']);
     Route::post('/admin/roles/permiso/borrar', [RolesController::class, 'borrarPermiso']);
+    Route::post('/admin/roles/nuevo-rol', [RolesController::class, 'nuevoRol']);
+    Route::post('/admin/roles/permiso/agregar', [RolesController::class, 'agregarPermiso']);
+    Route::get('/admin/roles/permisos-todos/tabla', [RolesController::class,'tablaTodosPermisos']);
+    Route::post('/admin/permisos/extra-borrar', [RolesController::class, 'borrarPermisoGlobal']);
+    Route::post('/admin/permisos/extra-nuevo', [RolesController::class, 'nuevoPermisoExtra']);
+    Route::get('/admin/usuarios/tabla', [RolesController::class,'tablaUsuarios']);
+    Route::post('/admin/permisos/nuevo-usuario', [RolesController::class, 'nuevoUsuario']);
+    Route::post('/admin/informacion/administrador', [RolesController::class, 'informacionAdministrador']);
+    Route::put('/admin/actualizar/administrador/{id}', [RolesController::class, 'actualizarAdministrador']);
+
 
 
 

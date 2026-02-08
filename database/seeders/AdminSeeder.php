@@ -18,12 +18,14 @@ class AdminSeeder extends Seeder
             'nombre' => 'Administrador',
             'email' => 't@gmail.com',
             'password' => Hash::make('1234'),
+            'estado' => true,
         ])->assignRole('admin');
 
         Administrador::create([
             'nombre' => 'Editor',
             'email' => 'e@gmail.com',
             'password' => Hash::make('1234'),
+            'estado' => true,
         ])->assignRole('editor');
     }
 }
