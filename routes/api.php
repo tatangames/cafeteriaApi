@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Login\LoginApiController;
 use App\Http\Controllers\Api\Auth\AuthApiController;
 use App\Http\Controllers\Api\Auth\DashboardController;
 use App\Http\Controllers\Api\Roles\RolesController;
+use App\Http\Controllers\Api\Config\ConfiguracionController;
 
 
 use Illuminate\Http\Request;
@@ -49,6 +50,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/permisos/nuevo-usuario', [RolesController::class, 'nuevoUsuario']);
     Route::post('/admin/informacion/administrador', [RolesController::class, 'informacionAdministrador']);
     Route::put('/admin/actualizar/administrador/{id}', [RolesController::class, 'actualizarAdministrador']);
+
+    // CATEGORIAS
+    Route::get('/admin/categorias/tabla', [ConfiguracionController::class,'tablaCategorias']);
+    Route::post('/admin/categorias/nuevo', [ConfiguracionController::class, 'registrarCategoria']);
+    Route::put('/admin/categorias/actualizar/{id}', [ConfiguracionController::class, 'actualizarCategoria']);
+
+
+    // UNIDAD DE MEDIDA
+    Route::get('/admin/unidadmedida/tabla', [ConfiguracionController::class,'tablaUnidadMedida']);
+    Route::post('/admin/unidadmedida/nuevo', [ConfiguracionController::class, 'registrarUnidadMedida']);
+    Route::put('/admin/unidadmedida/actualizar/{id}', [ConfiguracionController::class, 'actualizarUnidadMedida']);
 
 
 
